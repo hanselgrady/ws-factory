@@ -8,10 +8,11 @@ public class SaldoServiceImpl implements SaldoService {
     @Override
     public int getSaldo() {
         DatabaseConnector dbcon = new DatabaseConnector();
-        String sql = "SELECT * FROM saldo";
+        String sql = "SELECT saldoamount FROM saldo where saldoid = 1";
         dbcon.extractData(sql);
         ResultSet rs = dbcon.getResult();
         try {
+            rs.next();
             return rs.getInt("saldoamount");
         }
         catch (SQLException err) {
