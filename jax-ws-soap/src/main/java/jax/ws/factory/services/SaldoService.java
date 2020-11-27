@@ -9,7 +9,7 @@ import javax.jws.soap.SOAPBinding.Style;
 @SOAPBinding(style = Style.DOCUMENT)
 public interface SaldoService {
     @WebMethod
-    public String getSaldo();
+    public int getSaldo();
 
     @WebMethod
     public String addSaldo(int amount);

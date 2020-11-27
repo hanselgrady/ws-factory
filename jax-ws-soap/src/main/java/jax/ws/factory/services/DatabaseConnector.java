@@ -39,16 +39,26 @@ public class DatabaseConnector {
         return this.statement;
     }
 
-    public ResultSet getQueryResult(String query) {
+    public void extractData(String query) {
         System.out.println("EXECUTING QUERY: " + query);
-        this.result = this.statement.executeQuery(query);
-        return this.getResult();
+        try {
+            this.result = this.statement.executeQuery(query);
+            System.out.println("SUCCESSFULLY EXECUTING QUERY: " + query);
+        }
+        catch (SQLException err) {
+            err.printStackTrace();
+        }
     }
 
     public void updateDatabase(String query) {
         System.out.println("EXECUTING QUERY: " + query);
-        int x = this.statement.executeUpdate(query);
-        System.out.println("SUCCESSFULLY EXECUTE UPDATE ON DATABASE");
-        System.out.println("Numbers of line affected: " + x);
+        try {
+            int x = this.statement.executeUpdate(query);
+            System.out.println("SUCCESSFULLY EXECUTE UPDATE ON DATABASE");
+            System.out.println("Numbers of line affected: " + x);
+        }
+        catch (SQLException err) {
+            err.printStackTrace();
+        }
     }
 }

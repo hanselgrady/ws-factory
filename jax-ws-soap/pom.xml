@@ -81,7 +81,8 @@
             <archive>
               <manifest>
                 <addClasspath>true</addClasspath>
-                <mainClass>jax.ws.factory.App</mainClass>
+                <classpathPrefix>lib/</classpathPrefix>
+                <mainClass>com.jax.ws.factory.App</mainClass>
               </manifest>
             </archive>
           </configuration>

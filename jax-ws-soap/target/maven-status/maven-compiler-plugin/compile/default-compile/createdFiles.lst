@@ -1,1 +1,5 @@
+jax\ws\factory\services\SOAPPublisher.class
+jax\ws\factory\services\DatabaseConnector.class
+jax\ws\factory\services\SaldoService.class
+jax\ws\factory\services\SaldoServiceImpl.class
 jax\ws\factory\App.class
