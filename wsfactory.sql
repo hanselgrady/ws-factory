@@ -24,6 +24,7 @@ DROP TABLE IF EXISTS `choco_stock`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `choco_stock` (
   `chocoid` int NOT NULL,
+  `choconame` varchar(45) NOT NULL,
   `amount` int NOT NULL,
   PRIMARY KEY (`chocoid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -35,6 +36,7 @@ CREATE TABLE `choco_stock` (
 
 LOCK TABLES `choco_stock` WRITE;
 /*!40000 ALTER TABLE `choco_stock` DISABLE KEYS */;
+INSERT INTO `choco_stock` VALUES (1,'Coklat 1',0);
 /*!40000 ALTER TABLE `choco_stock` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -49,7 +51,7 @@ CREATE TABLE `ingredients` (
   `ingredientsid` int NOT NULL,
   `ingredientsname` varchar(45) NOT NULL,
   `ingredientsamount` int NOT NULL,
-  `expiredate` date NOT NULL,
+  `expiredate` date DEFAULT NULL,
   PRIMARY KEY (`ingredientsid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -60,6 +62,7 @@ CREATE TABLE `ingredients` (
 
 LOCK TABLES `ingredients` WRITE;
 /*!40000 ALTER TABLE `ingredients` DISABLE KEYS */;
+INSERT INTO `ingredients` VALUES (1,'coklat',0,NULL),(2,'almond',0,NULL),(3,'kismis',0,NULL);
 /*!40000 ALTER TABLE `ingredients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -87,6 +90,7 @@ CREATE TABLE `recipe` (
 
 LOCK TABLES `recipe` WRITE;
 /*!40000 ALTER TABLE `recipe` DISABLE KEYS */;
+INSERT INTO `recipe` VALUES (1,1,1),(1,2,1),(1,3,1);
 /*!40000 ALTER TABLE `recipe` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -156,4 +160,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-11-27 11:16:51
+-- Dump completed on 2020-11-28  5:02:54

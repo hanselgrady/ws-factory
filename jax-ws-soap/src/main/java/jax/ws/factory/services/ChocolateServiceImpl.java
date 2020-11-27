@@ -3,7 +3,7 @@ package jax.ws.factory.services;
 import javax.jws.WebService;
 import java.sql.*;
 
-@WebService(endpointInterface = "jax.ws.factory.services.SaldoService")
+@WebService(endpointInterface = "jax.ws.factory.services.ChocolateService")
 public class ChocolateServiceImpl implements ChocolateService {
     @Override
     public void addChocolate(String nama, String[] bahan, int[] jumlah) {
@@ -16,37 +16,91 @@ public class ChocolateServiceImpl implements ChocolateService {
         String sql;
         ResultSet rs;
         DatabaseConnector dbcon = new DatabaseConnector();
-        for (int i = 0; i < bahan.length; i++) {
-            // Cek bahan sudah ada atau belum
-            sql = "SELECT COUNT(*) AS DATA FROM (SELECT * FROM ingredients WHERE ingredientsname = '" + bahan[i] + "');"
+
+        sql = "SELECT COUNT(*) FROM recipe";
+        dbcon.extractData(sql);
+        rs = dbcon.getResult();
+        try {
+            rs.next();
+            count = rs.getInt("count(*)") + 1;
+        }
+        catch (SQLException err) {
+            err.printStackTrace();
+            System.exit(1);
+        }
+
+        if (count == 0) {
+            chocoid = 1;
+        }
+        else {
+            sql = "SELECT MAX(chocoid) FROM recipe";
             dbcon.extractData(sql);
             rs = dbcon.getResult();
             try {
                 rs.next();
-                count = rs.getInt("data");
+                chocoid = rs.getInt("max(chocoid)") + 1;
             }
             catch (SQLException err) {
                 err.printStackTrace();
                 System.exit(1);
             }
+        }
+
+        sql = "INSERT INTO choco_stock (chocoid, choconame, amount) VALUES (" + chocoid + ", '" + nama + "', 0);";
+        dbcon.updateDatabase(sql);
+
+        for (int i = 0; i < bahan.length; i++) {
+            // Cek bahan sudah ada atau belum
+            sql = "SELECT COUNT(*) FROM (SELECT * FROM ingredients WHERE ingredientsname = '" + bahan[i] + "') AS data;";
+            dbcon.extractData(sql);
+            rs = dbcon.getResult();
+            try {
+                rs.next();
+                count = rs.getInt("count(*)");
+            }
+            catch (SQLException err) {
+                err.printStackTrace();
+                System.exit(1);
+            }
+
             // atur data dalam basis data sesuai dengan keberadaan bahan
             if (count == 0) {
-                sql = "SELECT MAX(ingredientsid) FROM ingredients";
+                sql = "SELECT COUNT(*) FROM ingredients";
                 dbcon.extractData(sql);
+                rs = dbcon.getResult();
                 try {
                     rs.next();
-                    ingredientsid = rs.getInt("ingredientsid") + 1;
+                    count = rs.getInt("count(*)") + 1;
                 }
                 catch (SQLException err) {
                     err.printStackTrace();
                     System.exit(1);
                 }
+
+                if (count == 0) {
+                    ingredientsid = 1;
+                }
+                else {
+                    sql = "SELECT MAX(ingredientsid) FROM ingredients";
+                    dbcon.extractData(sql);
+                    rs = dbcon.getResult();
+                    try {
+                        rs.next();
+                        ingredientsid = rs.getInt("max(ingredientsid)") + 1;
+                    }
+                    catch (SQLException err) {
+                        err.printStackTrace();
+                        System.exit(1);
+                    }
+                }
+
                 sql = "INSERT INTO ingredients (ingredientsid, ingredientsname, ingredientsamount) VALUES (" + ingredientsid + ", '" + bahan[i] + "', 0);";
-                dbcon.updateDatabase(sql);
+                dbcon.updateDatabase(sql);    
             }
             else {
                 sql = "SELECT ingredientsid FROM ingredients WHERE ingredientsname = '" + bahan[i] + "';";
                 dbcon.extractData(sql);
+                rs = dbcon.getResult();
                 try {
                     rs.next();
                     ingredientsid = rs.getInt("ingredientsid");
@@ -56,17 +110,7 @@ public class ChocolateServiceImpl implements ChocolateService {
                     System.exit(1);
                 }
             }
-            sql = "SELECT MAX(chocoid) FROM ingredients";
-            dbcon.extractData(sql);
-            try {
-                rs.next();
-                chocoid = rs.getInt("chocoid") + 1;
-            }
-            catch (SQLException err) {
-                err.printStackTrace();
-                System.exit(1);
-            }
-            sql = "INSERT INTO recipe (chocoid, ingredientsid, ingredientsamount) VALUES (" + chocoid + ", " + ingredientsid + ", " + jumlah[i] ")";
+            sql = "INSERT INTO recipe (chocoid, ingredientsid, ingredientsamount) VALUES (" + chocoid + ", " + ingredientsid + ", " + jumlah[i] + ");";
             dbcon.updateDatabase(sql);
             System.out.println("SUCCESSFULLY ADDING NEW CHOCOLATE RECIPE TO DATABASE");
         }
