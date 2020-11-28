@@ -26,6 +26,6 @@ public class SaldoServiceImpl implements SaldoService {
         DatabaseConnector dbcon = new DatabaseConnector();
         String sql = "UPDATE saldo SET saldoamount = saldoamount + " + amount + " WHERE saldoid = 1";
         dbcon.updateDatabase(sql);
-        return "SUCCESSFULLY UPDATED THE DATABASE";
+        return "SUCCESS";
     }
 }
