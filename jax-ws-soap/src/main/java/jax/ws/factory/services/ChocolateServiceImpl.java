@@ -3,7 +3,7 @@ package jax.ws.factory.services;
 import javax.jws.WebService;
 import java.sql.*;
 
-@WebService(endpointInterface = "jax.ws.factory.services.SaldoService")
+@WebService(endpointInterface = "jax.ws.factory.services.ChocolateService")
 public class ChocolateServiceImpl implements ChocolateService {
     @Override
     public void addChocolate(String nama, String[] bahan, int[] jumlah) {
@@ -18,7 +18,7 @@ public class ChocolateServiceImpl implements ChocolateService {
         DatabaseConnector dbcon = new DatabaseConnector();
         for (int i = 0; i < bahan.length; i++) {
             // Cek bahan sudah ada atau belum
-            sql = "SELECT COUNT(*) AS DATA FROM (SELECT * FROM ingredients WHERE ingredientsname = '" + bahan[i] + "');"
+            sql = "SELECT COUNT(*) AS DATA FROM (SELECT * FROM ingredients WHERE ingredientsname = '" + bahan[i] + "');";
             dbcon.extractData(sql);
             rs = dbcon.getResult();
             try {
@@ -66,7 +66,7 @@ public class ChocolateServiceImpl implements ChocolateService {
                 err.printStackTrace();
                 System.exit(1);
             }
-            sql = "INSERT INTO recipe (chocoid, ingredientsid, ingredientsamount) VALUES (" + chocoid + ", " + ingredientsid + ", " + jumlah[i] ")";
+            sql = "INSERT INTO recipe (chocoid, ingredientsid, ingredientsamount) VALUES (" + chocoid + ", " + ingredientsid + ", " + jumlah[i] + ");";
             dbcon.updateDatabase(sql);
             System.out.println("SUCCESSFULLY ADDING NEW CHOCOLATE RECIPE TO DATABASE");
         }
