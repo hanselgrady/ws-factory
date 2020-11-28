@@ -12,7 +12,10 @@ public interface IngredientsService {
     public void addNewIngredient(String name, int amount);
 
     @WebMethod
-    public void addStock(int id, int amount);
+    public String listIngredients();
+
+    @WebMethod
+    public void requestStock(int id, int amount);
     
     @WebMethod
     public int getStock(int id);

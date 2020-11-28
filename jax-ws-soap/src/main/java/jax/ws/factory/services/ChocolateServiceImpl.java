@@ -141,15 +141,29 @@ public class ChocolateServiceImpl implements ChocolateService {
         JSONObject res = new JSONObject();
         res.put("status", "success");
         JSONArray items = new JSONArray();
+        
+        sql = "select choconame from choco_stock where chocoid = " + chocoid + ";";
+        dbcon.extractData(sql);
+        rs = dbcon.getResult();
+        try {
+            if(rs.next()) {
+                res.put("name", rs.getString("choconame"));
+            }
+        }
+        catch (SQLException err) {
+            err.printStackTrace();
+            return "{\"status\": \"FAILED\"}";
+        }
 
-        sql = "select ingredientsid, ingredientsamount from recipe where chocoid =" +  chocoid + ";";
+        sql = "select recipe.ingredientsid, ingredientsname, recipe.ingredientsamount from ingredients join recipe on (recipe.ingredientsid = ingredients.ingredientsid) where chocoid =" +  chocoid + ";";
         dbcon.extractData(sql);
         rs = dbcon.getResult();
         try {
             while(rs.next()) {
                 JSONObject item = new JSONObject();
-                item.put("id", rs.getInt("ingredientsid"));
-                item.put("amount", rs.getInt("ingredientsamount"));
+                item.put("id", rs.getInt("recipe.ingredientsid"));
+                item.put("ingredients", rs.getString("ingredientsname"));
+                item.put("amount", rs.getInt("recipe.ingredientsamount"));
                 items.add(item);
             }
             res.put("recipe", items);
