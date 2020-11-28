@@ -9,5 +9,5 @@ import javax.jws.soap.SOAPBinding.Style;
 @SOAPBinding(style = Style.DOCUMENT)
 public interface ChocolateService {
     @WebMethod
-    public void addChocolate(String nama, String[] bahan, int[] jumlah);
+    public String addChocolate(String nama, String[] bahan, int[] jumlah);
 }

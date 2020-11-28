@@ -6,7 +6,7 @@ import java.sql.*;
 @WebService(endpointInterface = "jax.ws.factory.services.ChocolateService")
 public class ChocolateServiceImpl implements ChocolateService {
     @Override
-    public void addChocolate(String nama, String[] bahan, int[] jumlah) {
+    public String addChocolate(String nama, String[] bahan, int[] jumlah) {
         // Asumsi :
         // <bahan[i]> yang dibutuhkan untuk membuat <nama> adalah <jumlah[i]>
         // bahan.length sama dengan jumlah.length
@@ -26,7 +26,7 @@ public class ChocolateServiceImpl implements ChocolateService {
         }
         catch (SQLException err) {
             err.printStackTrace();
-            System.exit(1);
+            return "FAILED";
         }
 
         if (count == 0) {
@@ -42,7 +42,7 @@ public class ChocolateServiceImpl implements ChocolateService {
             }
             catch (SQLException err) {
                 err.printStackTrace();
-                System.exit(1);
+                return "FAILED";
             }
         }
 
@@ -60,7 +60,7 @@ public class ChocolateServiceImpl implements ChocolateService {
             }
             catch (SQLException err) {
                 err.printStackTrace();
-                System.exit(1);
+                return "FAILED";
             }
 
             // atur data dalam basis data sesuai dengan keberadaan bahan
@@ -74,7 +74,7 @@ public class ChocolateServiceImpl implements ChocolateService {
                 }
                 catch (SQLException err) {
                     err.printStackTrace();
-                    System.exit(1);
+                    return "FAILED";
                 }
 
                 if (count == 0) {
@@ -90,7 +90,7 @@ public class ChocolateServiceImpl implements ChocolateService {
                     }
                     catch (SQLException err) {
                         err.printStackTrace();
-                        System.exit(1);
+                        return "FAILED";
                     }
                 }
 
@@ -107,12 +107,13 @@ public class ChocolateServiceImpl implements ChocolateService {
                 }
                 catch (SQLException err) {
                     err.printStackTrace();
-                    System.exit(1);
+                    return "FAILED";
                 }
             }
             sql = "INSERT INTO recipe (chocoid, ingredientsid, ingredientsamount) VALUES (" + chocoid + ", " + ingredientsid + ", " + jumlah[i] + ");";
             dbcon.updateDatabase(sql);
-            System.out.println("SUCCESSFULLY ADDING NEW CHOCOLATE RECIPE TO DATABASE");
         }
+        System.out.println("SUCCESSFULLY ADDING NEW CHOCOLATE RECIPE TO DATABASE");
+        return "SUCCESS";
     }
 }
