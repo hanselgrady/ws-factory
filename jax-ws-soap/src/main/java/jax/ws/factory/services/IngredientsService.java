@@ -7,7 +7,14 @@ import javax.jws.soap.SOAPBinding.Style;
 
 @WebService
 @SOAPBinding(style = Style.DOCUMENT)
-public interface RecipeService {
+public interface IngredientsService {
     @WebMethod
-    public String getChocolateRecipe(int chocoId);
+    public void addNewIngredient(String name, int amount);
+
+    @WebMethod
+    public void addStock(int id, int amount);
+    
+    @WebMethod
+    public int getStock(int id);
+    
 }
