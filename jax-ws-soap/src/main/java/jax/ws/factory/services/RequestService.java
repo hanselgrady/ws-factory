@@ -29,9 +29,8 @@ public interface RequestService {
     /**
      * 
      * @param requestID requestid that granted by WWFactory
-     * @return 
+     * Accessed from WWFactory for granting the request delivery
      */
     @WebMethod
-    public String acceptRequest(int requestID); // Accessed from WWFactory for granting the request delivery
-
+    public void acceptRequest(int requestID);
 }

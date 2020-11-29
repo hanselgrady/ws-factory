@@ -62,4 +62,39 @@ public class RequestServiceImpl implements RequestService {
         System.out.println("SUCCESSFULLY ADDING NEW REQUEST TO DATABASE");
         return "PENDING";
     }
+
+    @Override public int checkRequest(int chocoID) {
+        int result = 0;
+        String sql;
+        ResultSet rs;
+        DatabaseConnector dbcon = new DatabaseConnector();
+
+        // Get amount of total chocolate accepted request 
+        sql = "SELECT SUM(amount) FROM (SELECT amount FROM request WHERE chocoid = " + chocoID + " AND status = 'DELIVERED') AS delivered_item";
+        dbcon.extractData(sql);
+        rs = dbcon.getResult();
+        try {
+            rs.next();
+            result = rs.getInt("sum(amount)");
+        }
+        catch (SQLException err) {
+            err.printStackTrace();
+            return result;
+        }
+
+        // Remove accepted request after processed
+        sql = "DELETE FROM request WHERE chocoid = " + chocoID + " AND status = 'DELIVERED'";    
+        dbcon.updateDatabase(sql);
+        return result;
+    }
+
+    @Override public void acceptRequest(int requestID) {
+        String sql;
+        ResultSet rs;
+        DatabaseConnector dbcon = new DatabaseConnector();
+
+        // Get amount of total chocolate accepted request 
+        sql = "UPDATE request SET status = 'DELIVERED'  WHERE requestid = " + requestID +" AND status = 'PENDING'";
+        dbcon.extractData(sql);
+    }
 }
