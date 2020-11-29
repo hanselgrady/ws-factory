@@ -14,7 +14,6 @@ public class App
         Endpoint.publish("http://localhost:9999/ws/saldo", new SaldoServiceImpl());
         Endpoint.publish("http://localhost:9999/ws/chocolate", new ChocolateServiceImpl());
         Endpoint.publish("http://localhost:9999/ws/request", new RequestServiceImpl());
-
         Endpoint.publish("http://localhost:9999/ws/ingredients", new IngredientsServiceImpl());
     }
 }

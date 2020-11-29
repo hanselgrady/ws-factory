@@ -1,5 +1,5 @@
 package jax.ws.factory.services;
-
+import org.json.simple.*;
 import javax.jws.WebService;
 import java.sql.*;
 
@@ -118,9 +118,9 @@ public class RequestServiceImpl implements RequestService {
             while(rs.next()) {
                 JSONObject item = new JSONObject();
                 item.put("requestid", rs.getInt("requestid"));
-                item.put("chocoid", rs.getString("chocoid"));
+                item.put("chocoid", rs.getInt("chocoid"));
                 item.put("amount", rs.getInt("amount"));
-                item.put("status", rs.getInt("status"));
+                item.put("status", rs.getString("status"));
                 items.add(item);
             }
             res.put("request", items);
