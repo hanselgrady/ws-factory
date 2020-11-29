@@ -20,11 +20,10 @@ Saat pengguna menggunakan baik Willy Wangky's Factory maupun Willy Wangky's Web 
 
 Service yang disediakan adalah menyediakan informasi dan transaksi saldo, informasi bahan, pembuatan coklat, informasi resep, dan menangani permintaan dari Willy Wangky's Web Appliaction
 
-## Skema Basis Data
 
-1. choco_stock(chocoid, choconame, amout)
-2. ingredients(ingredientsid, ingredientsname, ingredientsamount, expiredate)
-3. recipe(chocoid, ingredientsid, ingredientsamount)
-untuk recipe merupakan tabel many-to-many dari cokelat dan bahan yang digunakan dalam resep beserta jumlahnya
-4. request(requestid, chocoid, amount, status)
-5. saldo(saldoid, saldoamount)
+# Skema Basis Data
+<br>choco_stock = (**chocoid**, choconame, amount)<br>
+ingredients = (**ingredientsid**, ingredientsname, ingredientsamount, expiredate)<br>
+recipe = (***chocoid***, ***ingredientsid***, ingredientsamount)<br>
+request = (**requestid**, chocoid, amount, status)<br>
+saldo = (**saldoid**, saldoamount)<br>
