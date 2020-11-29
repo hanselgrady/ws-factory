@@ -33,4 +33,7 @@ public interface RequestService {
      */
     @WebMethod
     public void acceptRequest(int requestID);
+
+    @WebMethod
+    public String listRequest();
 }

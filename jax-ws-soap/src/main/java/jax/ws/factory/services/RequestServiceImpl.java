@@ -99,4 +99,37 @@ public class RequestServiceImpl implements RequestService {
         sql = "UPDATE request SET status = 'DELIVERED'  WHERE requestid = " + requestID +" AND status = 'PENDING'";
         dbcon.extractData(sql);
     }
+
+    @Override
+    public String listRequest() {
+        
+        DatabaseConnector dbcon = new DatabaseConnector();
+        String sql;
+        ResultSet rs;
+
+        JSONObject res = new JSONObject();
+        res.put("status", "success");
+        JSONArray items = new JSONArray();
+        
+        sql = "select * from request;";
+        dbcon.extractData(sql);
+        rs = dbcon.getResult();
+        try {
+            while(rs.next()) {
+                JSONObject item = new JSONObject();
+                item.put("requestid", rs.getInt("requestid"));
+                item.put("chocoid", rs.getString("chocoid"));
+                item.put("amount", rs.getInt("amount"));
+                item.put("status", rs.getInt("status"));
+                items.add(item);
+            }
+            res.put("request", items);
+        }
+        catch (SQLException err) {
+            err.printStackTrace();
+            return "{\"status\": \"FAILED\"}";
+        }
+        return res.toJSONString();
+        
+    }
 }
