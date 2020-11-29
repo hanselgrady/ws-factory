@@ -2,6 +2,8 @@ package jax.ws.factory.services;
 
 import javax.jws.WebService;
 import java.sql.*;
+import org.json.simple.*;
+import org.json.simple.parser.*;
 
 @WebService(endpointInterface = "jax.ws.factory.services.ChocolateService")
 public class ChocolateServiceImpl implements ChocolateService {
@@ -110,10 +112,67 @@ public class ChocolateServiceImpl implements ChocolateService {
                     return "FAILED";
                 }
             }
+            
+            // sql = "SELECT MAX(chocoid) FROM ingredients";
+            // dbcon.extractData(sql);
+            // try {
+            //     rs.next();
+            //     chocoid = rs.getInt("chocoid") + 1;
+            // }
+            // catch (SQLException err) {
+            //     err.printStackTrace();
+            //     System.exit(1);
+            // }
+
             sql = "INSERT INTO recipe (chocoid, ingredientsid, ingredientsamount) VALUES (" + chocoid + ", " + ingredientsid + ", " + jumlah[i] + ");";
             dbcon.updateDatabase(sql);
         }
         System.out.println("SUCCESSFULLY ADDING NEW CHOCOLATE RECIPE TO DATABASE");
         return "SUCCESS";
+    }
+
+    @Override
+    public String getChocolateRecipe(int chocoid) {
+        
+        DatabaseConnector dbcon = new DatabaseConnector();
+        String sql;
+        ResultSet rs;
+
+        JSONObject res = new JSONObject();
+        res.put("status", "success");
+        JSONArray items = new JSONArray();
+        
+        sql = "select choconame from choco_stock where chocoid = " + chocoid + ";";
+        dbcon.extractData(sql);
+        rs = dbcon.getResult();
+        try {
+            if(rs.next()) {
+                res.put("name", rs.getString("choconame"));
+            }
+        }
+        catch (SQLException err) {
+            err.printStackTrace();
+            return "{\"status\": \"FAILED\"}";
+        }
+
+        sql = "select recipe.ingredientsid, ingredientsname, recipe.ingredientsamount from ingredients join recipe on (recipe.ingredientsid = ingredients.ingredientsid) where chocoid =" +  chocoid + ";";
+        dbcon.extractData(sql);
+        rs = dbcon.getResult();
+        try {
+            while(rs.next()) {
+                JSONObject item = new JSONObject();
+                item.put("id", rs.getInt("recipe.ingredientsid"));
+                item.put("ingredients", rs.getString("ingredientsname"));
+                item.put("amount", rs.getInt("recipe.ingredientsamount"));
+                items.add(item);
+            }
+            res.put("recipe", items);
+        }
+        catch (SQLException err) {
+            err.printStackTrace();
+            return "{\"status\": \"FAILED\"}";
+        }
+        return res.toJSONString();
+        
     }
 }

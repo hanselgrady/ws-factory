@@ -1,1 +1,4 @@
 /.metadata/
+*.class
+jax-ws-soap/target/
+*.swp

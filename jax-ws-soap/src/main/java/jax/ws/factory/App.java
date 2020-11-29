@@ -4,6 +4,7 @@ import javax.xml.ws.Endpoint;
 import jax.ws.factory.services.SaldoServiceImpl;
 import jax.ws.factory.services.ChocolateServiceImpl;
 import jax.ws.factory.services.RequestServiceImpl;
+import jax.ws.factory.services.IngredientsServiceImpl;
 
 public class App 
 {
@@ -14,5 +15,6 @@ public class App
         Endpoint.publish("http://localhost:9999/ws/chocolate", new ChocolateServiceImpl());
         Endpoint.publish("http://localhost:9999/ws/request", new RequestServiceImpl());
 
+        Endpoint.publish("http://localhost:9999/ws/ingredients", new IngredientsServiceImpl());
     }
 }

@@ -10,4 +10,7 @@ import javax.jws.soap.SOAPBinding.Style;
 public interface ChocolateService {
     @WebMethod
     public String addChocolate(String nama, String[] bahan, int[] jumlah);
+    
+    @WebMethod
+    public String getChocolateRecipe(int chocoid);
 }

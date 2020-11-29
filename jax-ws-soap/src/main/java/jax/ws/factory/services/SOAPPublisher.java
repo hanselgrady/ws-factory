@@ -8,5 +8,6 @@ public class SOAPPublisher {
         Endpoint.publish("http://localhost:8888/ws/chocolate", new ChocolateServiceImpl());
         Endpoint.publish("http://localhost:8888/ws/request", new RequestServiceImpl());
 
+        Endpoint.publish("http://localhost:8888/ws/ingredients", new IngredientsServiceImpl());
     }
 }
