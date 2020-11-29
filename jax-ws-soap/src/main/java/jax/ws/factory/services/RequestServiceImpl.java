@@ -92,7 +92,9 @@ public class RequestServiceImpl implements RequestService {
         String sql;
         ResultSet rs;
         DatabaseConnector dbcon = new DatabaseConnector();
-
+        // Make chocolate
+        // ...
+        
         // Get amount of total chocolate accepted request 
         sql = "UPDATE request SET status = 'DELIVERED'  WHERE requestid = " + requestID +" AND status = 'PENDING'";
         dbcon.extractData(sql);

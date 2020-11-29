@@ -8,7 +8,52 @@ import org.json.simple.parser.*;
 @WebService(endpointInterface = "jax.ws.factory.services.IngredientsService")
 public class IngredientsServiceImpl implements IngredientsService {
     @Override
-    public void addNewIngredient(String name, int amount) {
+    public void addNewIngredient(String name, int amount, String expire) {
+        DatabaseConnector dbcon = new DatabaseConnector();
+        String sql;
+        ResultSet rs;
+        int count = 0;
+        int ingredientsid = 0;
+        sql = "SELECT COUNT(*) FROM ingredients WHERE name = " + name + " AND expiredate = '" + expire +"'";
+        dbcon.extractData(sql);
+        rs = dbcon.getResult();
+        try {
+            rs.next();
+            count = rs.getInt("count(*)");
+        }
+        catch (SQLException err) {
+            err.printStackTrace();
+        }
+        sql = "SELECT MAX(chocoid) FROM ingredients";
+        dbcon.extractData(sql);
+        rs = dbcon.getResult();
+        try {
+            rs.next();
+            ingredientsid = rs.getInt("max(ingredientsid)") + 1;
+        }
+        catch (SQLException err) {
+            err.printStackTrace();
+        }
+
+        // same ingredients may have different ingredients date, so save to new tuples
+        if (count == 0) {
+            sql = "INSERT INTO request (ingredientsid, ingredientsname, ingredientsamount, expiredate) VALUES (" + ingredientsid + ", " + name + ", " + amount + ", '" + expire +"')";
+            dbcon.updateDatabase(sql);
+        }
+        else {
+            sql = "SELECT ingredientsamount FROM ingredients WHERE name = " + name + " AND expiredate = '" + expire +"'";
+            int ingredientsamount = 0;
+            dbcon.extractData(sql);
+            rs = dbcon.getResult();
+            try {
+                rs.next();
+                ingredientsamount = rs.getInt("ingredientsamount") + amount;
+            }
+            catch (SQLException err) {
+                err.printStackTrace();
+            }
+            sql = "UPDATE request SET ingredientsamount = " + ingredientsamount + " WHERE name = " + name + " AND expiredate = '" + expire +"'";
+        }
     }
 
     @Override
