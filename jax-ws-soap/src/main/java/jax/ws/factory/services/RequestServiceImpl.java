@@ -111,7 +111,7 @@ public class RequestServiceImpl implements RequestService {
         res.put("status", "success");
         JSONArray items = new JSONArray();
         
-        sql = "select * from request;";
+        sql = "SELECT * FROM request";
         dbcon.extractData(sql);
         rs = dbcon.getResult();
         try {
