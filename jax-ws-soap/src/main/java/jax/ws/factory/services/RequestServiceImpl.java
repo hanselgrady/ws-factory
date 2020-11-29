@@ -55,7 +55,7 @@ public class RequestServiceImpl implements RequestService {
             }
         }
 
-        sql = "INSERT INTO request (requestid, chocoid, amount) VALUES (" + requestid + ", " + chocoID + ", 'PENDING');";
+        sql = "INSERT INTO request (requestid, chocoid, amount, status) VALUES (" + requestid + ", " + chocoID + ", " + amount + ", 'pending');";
         dbcon.updateDatabase(sql);
 
         
